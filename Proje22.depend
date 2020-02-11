@@ -4,7 +4,7 @@
 	<stdlib.h>
 	<string.h>
 
-1581447260 c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_lexical.h
+1581459376 c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_lexical.h
 	<stdio.h>
 
 1581447273 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\main.c
@@ -13,10 +13,13 @@
 	<string.h>
 	<stdlib.h>
 
-1580781800 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_syntaxique.c
+1581459876 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_syntaxique.c
 	"analyseur_syntaxique.h"
+	"Analyseur_lexical.h"
 
-1580781872 c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_syntaxique.h
+1581459786 c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_syntaxique.h
 	"Analyseur_lexical.h"
 	<stdio.h>
+	<stdlib.h>
+	<string.h>
 

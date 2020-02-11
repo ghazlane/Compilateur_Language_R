@@ -11,10 +11,11 @@ void Test_Symbole ( CODE_LEX cl, Erreurs COD_ERR){
 }
 
 void INSTS(){
-     if(SYM_COUR.CODE!=-1){
+    if(SYM_COUR.CODE!=-1){
             INST();
             if(SYM_COUR.CODE == PV_TOKEN){
-                while (Test_Symbole(PV_TOKEN, ERR_CAR_INC)){
+                while (SYM_COUR.CODE == PV_TOKEN){
+                    Test_Symbole(PV_TOKEN, ERR_CAR_INC);
                     INSTS();
                 }
             }
@@ -171,6 +172,13 @@ void SI(){
     INSTS();
     STOP();
     Test_Symbole(ACCF_TOKEN, ERR_CAR_INC);
+    if(SYM_COUR.CODE== ELSE_TOKEN){
+        Test_Symbole(ELSE_TOKEN, ERR_CAR_INC);
+         Test_Symbole(ACCO_TOKEN, ERR_CAR_INC);
+    INSTS();
+    STOP();
+    Test_Symbole(ACCF_TOKEN, ERR_CAR_INC);
+    }
 }
 
 void POUR(){
@@ -244,6 +252,12 @@ void OP(){
             break;
         case DIV_TOKEN :Test_Symbole(DIV_TOKEN, ERR_CAR_INC);
             break;
+        case PUISS_TOKEN :Test_Symbole(PUISS_TOKEN, ERR_CAR_INC);
+            break;
+        case REST_TOKEN : Test_Symbole(REST_TOKEN, ERR_CAR_INC);
+            break;
+        case ENTIER_TOKEN : Test_Symbole(ENTIER_TOKEN, ERR_CAR_INC);
+            break;
     }
 }
 
@@ -269,7 +283,7 @@ void RETURN(){
         Test_Symbole(RETURN_TOKEN, ERR_CAR_INC);
         Test_Symbole(PO_TOKEN, ERR_CAR_INC);
         INST();
-        Test_Symbole(PF_TOKEN, ERR_CAR_INC)
+        Test_Symbole(PF_TOKEN, ERR_CAR_INC);
     }
 }
 
@@ -285,8 +299,8 @@ void SEQ(){
     switch(SYM_COUR.CODE){
         case ID_TOKEN : Test_Symbole(ID_TOKEN, ERR_CAR_INC); break ;
         case NUM_TOKEN : Test_Symbole(NUM_TOKEN, ERR_CAR_INC);
-                        Test_Symbole(DPT_TOKEN? ERR_CAR_INC);
-                        Test_Symbole(NUM_TOKEN, ERR_CAR_INC);
+                        Test_Symbole(DPT_TOKEN, ERR_CAR_INC);
+                        Test_Symbole(NUM_TOKEN, ERR_CAR_INC);break;
     }
 }
 
