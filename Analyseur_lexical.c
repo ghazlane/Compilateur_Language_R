@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 void Ouvrir_Fichier(char* f){
     Fichier= fopen(f, "r");
 }
@@ -15,15 +16,15 @@ void Lire_Mots(){
 	while(Car_Cour != ' ' && Car_Cour != '\n'  && Car_Cour != '\t'  && Car_Cour != ';' && Car_Cour != '.' && Car_Cour!= '=' && Car_Cour!= '+'
             && Car_Cour!= '-' && Car_Cour!='*'&& Car_Cour!= '/'&& Car_Cour!= ',' && Car_Cour!= ':' && Car_Cour !='<' && Car_Cour!='>'
             && Car_Cour!= '(' && Car_Cour!=')' && Car_Cour!='#' && Car_Cour!= '{' && Car_Cour!= '}' && Car_Cour!= '[' && Car_Cour!= ']' &&
-            Car_Cour != '"' && Car_Cour != ':')
+            Car_Cour != '"' && Car_Cour != ':'&& Car_Cour != '^' && Car_Cour != '%')
         {
             SYM_COUR.NOM[i] = Car_Cour;
             Lire_Caractere();
             i++;
-	}
+	    }
 	SYM_COUR.NOM[i]='\0';
-	for(int j=0;j<9;j++){
-        if(!strcmp(SYM_COUR.NOM,MOTS_CLES[j])){
+	for(int j=0;j<11;j++){
+        if(!strcmp(SYM_COUR.NOM , MOTS_CLES[j])){
             SYM_COUR.CODE=j+1;
             return ;
         }
@@ -37,7 +38,7 @@ void Lire_Nombre(){
    while(Car_Cour != ' ' && Car_Cour != '\n'  && Car_Cour != '\t'&& Car_Cour != ';' &&Car_Cour!= '.' &&Car_Cour!= '=' && Car_Cour!= '+'
         && Car_Cour!= '-'&& Car_Cour!='*'&& Car_Cour!= '/'&&Car_Cour!= ',' &&Car_Cour!= ':' &&Car_Cour!='<' &&Car_Cour!='>'
         &&Car_Cour!= '(' &&Car_Cour!=')' && Car_Cour!='#' && Car_Cour!= '{' && Car_Cour!= '}' && Car_Cour!= '[' && Car_Cour!= ']' &&
-        Car_Cour != '"' && Car_Cour != ':'){
+        Car_Cour != '"' && Car_Cour != ':' && Car_Cour != '^' && Car_Cour != '%'){
             SYM_COUR.NOM[i] = Car_Cour;
             Lire_Caractere();
             i++;
@@ -113,6 +114,27 @@ void Lire_Special(){
 	else if(Car_Cour==']') SYM_COUR.CODE = CRF_TOKEN;
     else if(Car_Cour==':') SYM_COUR.CODE = DPT_TOKEN;
     else if(Car_Cour=='"') SYM_COUR.CODE = APS_TOKEN;
+    else if(Car_Cour=='^') SYM_COUR.CODE = PUISS_TOKEN;
+    else if(Car_Cour=='%') {
+            Lire_Caractere();
+            if(Car_Cour=='%'){
+                i++;
+                SYM_COUR.NOM[i]=Car_Cour;
+                SYM_COUR.CODE=REST_TOKEN;
+            }
+            else if(Car_Cour=='/'){
+                i++;
+                SYM_COUR.NOM[i]=Car_Cour;
+                Lire_Caractere();
+
+                if(Car_Cour=='%'){
+                i++;
+                SYM_COUR.NOM[i]=Car_Cour;
+                SYM_COUR.CODE=ENTIER_TOKEN;
+                }
+            }
+            else  Erreur(ERR_CAR_INC);
+	}
 
 	Lire_Caractere();
 }
@@ -130,7 +152,7 @@ void Lire_Commentaire(){
         SYM_COUR.CODE=ERREUR_TOKEN;
         Erreur(ERR_COM);
     }
-    Lire_Caractere();
+   // printf("Commentaire \n");
 }
 
 
@@ -160,10 +182,17 @@ void Sym_Suiv(){
 
     else if(Car_Cour=='#') {
         Lire_Commentaire();
+        SYM_COUR.NOM[0] ='#';
 	}
 
-   else if (Car_Cour>= ';' ||Car_Cour>= '.' || Car_Cour>= '='|| Car_Cour>= '+' || Car_Cour>= '-'|| Car_Cour>= '*'|| Car_Cour>= '/'||Car_Cour>= ',' ||Car_Cour>= '<' ||Car_Cour>= '>' ||Car_Cour>= '(' || Car_Cour>= ')' || Car_Cour>= '{' || Car_Cour>= '}' || Car_Cour>= '[' || Car_Cour>= ']' || Car_Cour>= ':' || Car_Cour>= '"'){
+   else if (Car_Cour != '^' || Car_Cour != '%' || Car_Cour>= ';' ||Car_Cour>= '.' || Car_Cour>= '='|| Car_Cour>= '+' || Car_Cour>= '-'|| Car_Cour>= '*'|| Car_Cour>= '/'||Car_Cour>= ',' ||Car_Cour>= '<' ||Car_Cour>= '>' ||Car_Cour>= '(' || Car_Cour>= ')' || Car_Cour>= '{' || Car_Cour>= '}' || Car_Cour>= '[' || Car_Cour>= ']' || Car_Cour>= ':' || Car_Cour>= '"'){
         Lire_Special();
+    }
+
+    else if(Car_Cour==EOF){
+        Car_Cour == ' ';
+        strcpy("EOF",SYM_COUR.NOM);
+        SYM_COUR.CODE = EOF_TOKEN;
     }
 
     else{

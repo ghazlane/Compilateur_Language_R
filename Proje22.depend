@@ -1,15 +1,22 @@
 # depslib dependency file v1.0
-1580573836 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_lexical.c
+1581447246 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_lexical.c
 	"Analyseur_lexical.h"
 	<stdlib.h>
 	<string.h>
 
-1580573833 c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_lexical.h
+1581447260 c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_lexical.h
 	<stdio.h>
 
-1580573840 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\main.c
+1581447273 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\main.c
 	"Analyseur_lexical.h"
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
+
+1580781800 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_syntaxique.c
+	"analyseur_syntaxique.h"
+
+1580781872 c:\users\asus\desktop\projetcompila\compilateur_language_r\proje22\analyseur_syntaxique.h
+	"Analyseur_lexical.h"
+	<stdio.h>
 

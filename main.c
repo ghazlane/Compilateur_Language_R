@@ -11,5 +11,6 @@ int main(){
 		Sym_Suiv();
 		AfficherToken(SYM_COUR);
 	}
+
 	return 1;
 }

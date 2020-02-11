@@ -31,6 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Analyseur_lexical.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Analyseur_lexical.h" />
+		<Unit filename="Analyseur_syntaxique.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Analyseur_syntaxique.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
