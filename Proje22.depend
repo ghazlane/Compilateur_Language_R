@@ -23,3 +23,28 @@
 	<stdlib.h>
 	<string.h>
 
+1581623868 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\teeeest\compilateur_language_r\analyseur_lexical.c
+	"Analyseur_lexical.h"
+	<stdlib.h>
+	<string.h>
+
+1581626360 c:\users\asus\desktop\projetcompila\compilateur_language_r\teeeest\compilateur_language_r\analyseur_lexical.h
+	<stdio.h>
+
+1581626397 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\teeeest\compilateur_language_r\analyseur_syntaxique.c
+	"analyseur_syntaxique.h"
+	"Analyseur_lexical.h"
+
+1581625928 c:\users\asus\desktop\projetcompila\compilateur_language_r\teeeest\compilateur_language_r\analyseur_syntaxique.h
+	"Analyseur_lexical.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1581623989 source:c:\users\asus\desktop\projetcompila\compilateur_language_r\teeeest\compilateur_language_r\main.c
+	"Analyseur_lexical.h"
+	"Analyseur_syntaxique.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+
