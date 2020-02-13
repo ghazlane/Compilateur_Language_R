@@ -9,8 +9,7 @@
 int main(){
 	Ouvrir_Fichier("programR.r");
 	Premier_sym();
-
-	INSTS();
+INSTS();
     if (SYM_COUR.CODE==EOF_TOKEN)
 	    printf("BRAVO: le programme est correcte!!!");
     else
@@ -19,3 +18,16 @@ int main(){
 	getch();
 	return 1;
 }
+/*
+int main(){
+	Ouvrir_Fichier("programR.r");
+	Lire_Caractere();
+	while (Car_Cour!=EOF) {
+		Sym_Suiv();
+		AfficherToken(SYM_COUR);
+	}
+
+
+	return 1;
+}
+*/

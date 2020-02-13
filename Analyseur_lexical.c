@@ -4,6 +4,8 @@
 
 
 
+
+
 void Ouvrir_Fichier(char* f){
     Fichier= fopen(f, "r");
 }
@@ -164,18 +166,18 @@ void Lire_String(){
         Lire_Caractere();
     }while(SYM_COUR.NOM[0] !='"');
 
-    if(SYM_COUR.NOM[0]=='"')
+    if(SYM_COUR.NOM[0]=='"'){
         SYM_COUR.CODE = STRING_TOKEN;
+    }
     else {
         SYM_COUR.CODE=ERREUR_TOKEN;
         Erreur(ERR_STRING);
     }
   // printf("Chaine de caractere \n");
 }
-
 void Erreur(Erreurs ERR){
 	int  ind_err=ERR;
-	printf( "Erreur  numero  %d \t : %s \n", ind_err, MES_ERR[ind_err] .mes);
+	printf( "Erreur  numero  %d \t : %s , %s %s \n", ind_err, MES_ERR[ind_err] .mes,MES_ERR[ind_err].CODE_ERR,SYM_COUR.NOM);
 	//getch();
 	exit(1);
 }
@@ -201,7 +203,7 @@ void Sym_Suiv(){
         Lire_Commentaire();
 	}
 
-   else if (Car_Cour == '\n' || Car_Cour==EOF || Car_Cour >= '^' || Car_Cour >= '%' || Car_Cour>= ';' ||Car_Cour>= '.' || Car_Cour>= '='|| Car_Cour>= '+' || Car_Cour>= '-'|| Car_Cour>= '*'|| Car_Cour>= '/'||Car_Cour>= ',' ||Car_Cour>= '<' ||Car_Cour>= '>' ||Car_Cour>= '(' || Car_Cour>= ')' || Car_Cour>= '{' || Car_Cour>= '}' || Car_Cour>= '[' || Car_Cour>= ']' || Car_Cour>= ':' ){
+   else if (Car_Cour == '\n' ||Car_Cour==EOF || Car_Cour >= '^' || Car_Cour >= '%' || Car_Cour>= ';' ||Car_Cour>= '.' || Car_Cour>= '='|| Car_Cour>= '+' || Car_Cour>= '-'|| Car_Cour>= '*'|| Car_Cour>= '/'||Car_Cour>= ',' ||Car_Cour>= '<' ||Car_Cour>= '>' ||Car_Cour>= '(' || Car_Cour>= ')' || Car_Cour>= '{' || Car_Cour>= '}' || Car_Cour>= '[' || Car_Cour>= ']' || Car_Cour>= ':' ){
         Lire_Special();
     }
 
@@ -218,5 +220,7 @@ void Sym_Suiv(){
 void AfficherToken(TSym_Cour Sc){
     printf("  %s    : %s \n",SYM_COUR.NOM , Code_Lex_Chaine[SYM_COUR.CODE]);
 }
+
+
 
 
