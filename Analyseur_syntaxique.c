@@ -1,10 +1,13 @@
-#include "analyseur_syntaxique.h"
+#include "Analyseur_syntaxique.h"
 #include "Analyseur_lexical.h"
+#include "Analyseur_semantique.c"
+
 #define TRUE 0
 #define FALSE 1
-
+char id[20];
 void Test_Symbole ( CODE_LEX cl, Erreurs COD_ERR){
     if (SYM_COUR.CODE == cl){
+        Copier_sym(SYM_COUR.NOM);
         Sym_Suiv();
     }
     else if(SYM_COUR.CODE==-1) Sym_Suiv();
@@ -19,7 +22,7 @@ int TestSymobleSpecial(){
 }
 
 void INSTS(){
-    printf("first insts\n");
+    printf("first INSTS\n");
     if(TestSymobleSpecial() == TRUE){
          while(SYM_COUR.CODE == RETOUR_TOKEN)
          Test_Symbole(RETOUR_TOKEN, ERR_CAR_INC);
@@ -34,18 +37,19 @@ void INSTS(){
                 }
             }*/
 
-                    if(SYM_COUR.CODE == PV_TOKEN)  {Test_Symbole(PV_TOKEN, ERR_CAR_INC); printf("****** dkhl hna");
+                    if(SYM_COUR.CODE == PV_TOKEN)  {Test_Symbole(PV_TOKEN, ERR_CAR_INC); /*printf("****** dkhl hna");*/
                   INSTS();  }
-                    if(SYM_COUR.CODE == RETOUR_TOKEN){Test_Symbole(RETOUR_TOKEN, ERR_CAR_INC);printf("****** dkhl hna 2");
+                    if(SYM_COUR.CODE == RETOUR_TOKEN){Test_Symbole(RETOUR_TOKEN, ERR_CAR_INC);/*printf("****** dkhl hna 2");*/
                     INSTS(); }
     }
-     printf("end insts\n");
+     printf("end INSTS\n");
 }
 
 void INST(){
-     printf("first inst\n");
+     printf("first INST\n");
     switch (SYM_COUR.CODE) {
-        case ID_TOKEN : Sym_Suiv();
+        case ID_TOKEN :Test_Symbole(ID_TOKEN, ERR_CAR_INC);
+                        Copier(id,sym_prec);
                         INST_PRIME();
                         break;
         case FUNCTION_TOKEN : FUNCTION();
@@ -64,23 +68,32 @@ void INST(){
                             break;
         default : printf("Erreur Anayse syntaxique 2 "); return;
     }
-     printf("end inst\n");
+     printf("end INST\n");
 }
 
 void INST_PRIME(){
-    printf("first INST_PRIME\n");
+  //  printf("first INST_PRIME\n");
     switch(SYM_COUR.CODE){
-        case EGAL_TOKEN : AFFECT();
+    case EGAL_TOKEN :       if(is_fonction(sym_prec)==0) Erreur(ISFUNCTION);
+                            T_DECLARATION(sym_prec,TIDENT,chaine_vide);
+                            AFFECT();
                             break;
-        case AFF_TOKEN : AFFECT();
-                          break;
-        case PT_TOKEN : COMMANDE();
+        case AFF_TOKEN :    if(is_fonction(sym_prec)==0) Erreur(ISFUNCTION);
+                            T_DECLARATION(sym_prec,TIDENT,chaine_vide);
+                            AFFECT();
+                            break;
+        case PT_TOKEN :     if(is_fonction(sym_prec)==0) Erreur(ISFUNCTION);
+                            T_DECLARATION(sym_prec,TIDENT,chaine_vide);
+                            COMMANDE();
                             break ;
-        case PO_TOKEN : COMMANDE();
+        case PO_TOKEN : /*strcmp(chaine_vide,'__');
+                            T_DECLARATION(sym_prec,TCMD,chaine_vide);*/
+                        if (is_command(sym_prec)!=0 && is_fonction(sym_prec)!=0) { Erreur(NOTCMD);}
+                        COMMANDE();
                         break ;
         default : ;
     }
-    printf("end INST_PRIME\n");
+  //  printf("end INST_PRIME\n");
 }
 
 void AFFECT(){
@@ -91,7 +104,7 @@ void AFFECT(){
 }
 
 void AFFECT_PRIME(){
-    printf("first AFFECT_PRIME\n");
+  //  printf("first AFFECT_PRIME\n");
     switch(SYM_COUR.CODE){
         case EGAL_TOKEN : Test_Symbole(EGAL_TOKEN, ERR_CAR_INC);
                             break;
@@ -99,33 +112,38 @@ void AFFECT_PRIME(){
                             break;
         default : return ;
     }
-    printf("end AFFECT_PRIME\n");
+   // printf("end AFFECT_PRIME\n");
 }
 
 void AFFECT_PRIME_SECOND(){
-    printf("first AFFECT_SECOND\n");
+    //printf("first AFFECT_SECOND\n");
     switch(SYM_COUR.CODE){
         case ID_TOKEN : Test_Symbole(ID_TOKEN, ERR_CAR_INC);
+                        if (is_declared(sym_prec)!=0 && is_argument(sym_prec)!=0)Erreur(NOTDECLARED);
                         AFFECT_PRIME_TROIS();
                         break ;
-        case FUNCTION_TOKEN : FUNCTION();
+        case FUNCTION_TOKEN :   Copier(fun_nom,id);
+                                T_DECLARATION(fun_nom,TFUNCT,chaine_vide);
+                                FUNCTION();
                                 break ;
         case STRING_TOKEN : Test_Symbole(STRING_TOKEN, ERR_CAR_INC);break;
         default : EXPR();
     }
-    printf("end AFFECT_SECOND\n");
+    //printf("end AFFECT_SECOND\n");
 }
 
 void AFFECT_PRIME_TROIS(){
-    printf("first AFFECT_TROIS\n");
+   // printf("first AFFECT_TROIS\n");
     switch(SYM_COUR.CODE){
-        case PT_TOKEN : COMMANDE();
+        case PT_TOKEN : if (is_command(sym_prec)!=0 && is_fonction(sym_prec)!=0) { Erreur(NOTCMD);}
+                        COMMANDE();
                         break;
-        case PO_TOKEN : COMMANDE();
+        case PO_TOKEN : if (is_command(sym_prec)!=0 && is_fonction(sym_prec)!=0) { Erreur(NOTCMD);}
+                        COMMANDE();
                         break;
         default : OP(); TERM();
     }
-    printf("end AFFECT_PRIME\n");
+    //printf("end AFFECT_PRIME\n");
 }
 void vider(){
     while(SYM_COUR.CODE == RETOUR_TOKEN)
@@ -146,13 +164,20 @@ void FUNCTION(){
     printf("im here\n");
     vider();
     Test_Symbole(ACCF_TOKEN, ERR_CAR_INC);
+    T_FUNCTION(fun_nom,nb_arg);
     printf("end FUNCTION\n");
 }
 
 void ARGUMENT(){
      printf("first ARGUMENT\n");
     if(SYM_COUR.CODE == ID_TOKEN ||SYM_COUR.CODE == STRING_TOKEN){
-        IDENT();
+           nb_arg++;
+        if(SYM_COUR.CODE == ID_TOKEN ){
+                Test_Symbole(ID_TOKEN, ERR_CAR_INC);
+                T_DECLARATION(sym_prec,TARG,fun_nom);
+        }
+        else
+        Test_Symbole(STRING_TOKEN,ERR_CAR_INC);
         ARGUMENT_PRIME();
     }
      printf("end ARGUMENT\n");
@@ -186,23 +211,31 @@ void ARGUMENT_PRIME(){
 void COMMANDE(){
      printf("first COMMANDE\n");
     switch(SYM_COUR.CODE){
-        case PT_TOKEN : Test_Symbole(PT_TOKEN, ERR_CAR_INC);
+        case PT_TOKEN :
+                        Test_Symbole(PT_TOKEN, ERR_CAR_INC);
                         Test_Symbole(ID_TOKEN, ERR_CAR_INC);
+                        Copier(cmd_nom,sym_prec);
                         Test_Symbole(PO_TOKEN, ERR_CAR_INC);
                         PARAMETRE();
                         Test_Symbole(PF_TOKEN, ERR_CAR_INC);
                         break;
-        default :  Test_Symbole(PO_TOKEN, ERR_CAR_INC);
+        default :       Copier(cmd_nom,sym_prec);
+                        Test_Symbole(PO_TOKEN, ERR_CAR_INC);
                         PARAMETRE();
                         Test_Symbole(PF_TOKEN, ERR_CAR_INC);
     }
+     if (is_nb_parameter(cmd_nom, nb_para)!=0 && is_nb_argument(cmd_nom,nb_para)!=0 ) Erreur(NBPARA);
+     nb_para = 0;
      printf("end COMMANDE\n");
 }
 
 void PARAMETRE(){
      printf("first PARAMETRE\n");
-     if(SYM_COUR.CODE == ID_TOKEN ||SYM_COUR.CODE == STRING_TOKEN){
-        IDENT();
+     if(SYM_COUR.CODE == ID_TOKEN ||SYM_COUR.CODE == STRING_TOKEN || SYM_COUR.CODE == NUM_TOKEN ){
+        nb_para++;
+        if(SYM_COUR.CODE == ID_TOKEN ){Test_Symbole(ID_TOKEN, ERR_CAR_INC);if (is_declared(sym_prec)!=0) Erreur(NOTDECLARED); }
+        else if(SYM_COUR.CODE == NUM_TOKEN ) Test_Symbole(NUM_TOKEN,ERR_CAR_INC);
+        else Test_Symbole(STRING_TOKEN,ERR_CAR_INC);
         PARAMETRE_PRIME();
     }
 
@@ -254,6 +287,8 @@ void POUR(){
     Test_Symbole(FOR_TOKEN, ERR_CAR_INC);
     Test_Symbole(PO_TOKEN, ERR_CAR_INC);
     Test_Symbole(ID_TOKEN, ERR_CAR_INC);
+    if(is_fonction(sym_prec)==0) Erreur(ISFUNCTION);
+    T_DECLARATION(sym_prec,TIDENT,chaine_vide);
     Test_Symbole(IN_TOKEN, ERR_CAR_INC);
     SEQ();
     Test_Symbole(PF_TOKEN,  ERR_CAR_INC);
@@ -267,6 +302,7 @@ void POUR(){
 }
 
 void TANTQUE(){
+    printf("first TANTQUE\n");
     Test_Symbole(WHILE_TOKEN, ERR_CAR_INC);
     Test_Symbole(PO_TOKEN, ERR_CAR_INC);
     COND();
@@ -277,9 +313,11 @@ void TANTQUE(){
     STOP();
     vider();
     Test_Symbole(ACCF_TOKEN, ERR_CAR_INC);
+    printf("end TANTQUE\n");
 }
 
 void REPETER(){
+    printf("first REPETER\n");
     Test_Symbole(REPEAT_TOKEN,ERR_CAR_INC);
     vider();
     Test_Symbole(ACCO_TOKEN, ERR_CAR_INC);
@@ -292,14 +330,15 @@ void REPETER(){
     Test_Symbole(BREAK_TOKEN,ERR_CAR_INC );*/
     vider();
     Test_Symbole(ACCF_TOKEN, ERR_CAR_INC);
+    printf("end REPETER\n");
 }
 
 void COND(){
-    printf("first cond\n");
+    printf("first COND\n");
     EXPR() ;
     VERF();
     EXPR();
-    printf("end cond\n");
+    printf("end COND\n");
 }
 
 void EXPR(){
@@ -315,13 +354,14 @@ void TERM(){
     switch(SYM_COUR.CODE){
         printf("first TERM\n");
         case ID_TOKEN : Test_Symbole(ID_TOKEN, ERR_CAR_INC);
+                        if (is_declared(sym_prec)!=0 && is_argument(sym_prec)!=0)Erreur(NOTDECLARED);
                         break;
         case NUM_TOKEN : Test_Symbole(NUM_TOKEN, ERR_COM);
                         break;
-      /*  default : Test_Symbole(PO_TOKEN, ERR_CAR_INC);
+        case PO_TOKEN : Test_Symbole(PO_TOKEN, ERR_CAR_INC);
                   EXPR();
                   Test_Symbole(PF_TOKEN, ERR_CAR_INC);
-                  */
+
     }
     printf("fin TERM\n");
 }
@@ -407,7 +447,6 @@ void Premier_sym(){
     Sym_Suiv();
 
 }
-
 
 
 

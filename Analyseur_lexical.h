@@ -36,7 +36,7 @@ char Car_Cour; //caractere courant
 // DECLARATION DES CLASSES DES ERREURS
 //------------------------------------------------------------------------------
 typedef enum {
-	ERR_CAR_INC, ERR_FICH_VID, ERR_ID_LONG, ERR_NUM_LONG, ERR_COM, ERR_STRING
+	ERR_CAR_INC, ERR_FICH_VID, ERR_COM, ERR_STRING, NOTCMD, NUMARG, NOTDECLARED,ISFUNCTION,NBPARA
 }Erreurs;
 
 //------------------------------------------------------------------------------
@@ -44,7 +44,8 @@ typedef enum {
 //------------------------------------------------------------------------------
 typedef  struct  {   Erreurs  CODE_ERR; char mes[40] ;  }Mes_Erreurs;
 
-static Mes_Erreurs	MES_ERR[100]={{ERR_CAR_INC,"caractere inconnu"}, {ERR_FICH_VID,"fichier vide"},{ERR_COM,"erreur commentaire"},{ERR_STRING, "Chaine de caractere incorrecte"}};
+static Mes_Erreurs	MES_ERR[100]={{ERR_CAR_INC,"caractere inconnu"}, {ERR_FICH_VID,"fichier vide"},{ERR_COM,"erreur commentaire"},{ERR_STRING, "Chaine de caractere incorrecte"},{NOTCMD, "Coomande introuvable"},{NUMARG, "nombre des arguments utilisés dans cette commande est incorrecte"}
+,{NOTDECLARED,"identifiant non declaré"},{ISFUNCTION,"l'identifiant est un id d'une fonction deja definie"},{NBPARA,"nombre de parametre est insuffisant"}};
 
 
 //fonctions

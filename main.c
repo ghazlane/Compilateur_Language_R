@@ -11,7 +11,7 @@ int main(){
 	Premier_sym();
 INSTS();
     if (SYM_COUR.CODE==EOF_TOKEN)
-	    printf("BRAVO: le programme est correcte!!!");
+	    printf("\n\n**************BRAVO: le programme est correcte!!!*************\n\n\n\n\n");
     else
         printf("PAS BRAVO: fin de programme erronée!!!!");
 

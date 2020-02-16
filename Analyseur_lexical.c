@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
-
-
 void Ouvrir_Fichier(char* f){
     Fichier= fopen(f, "r");
 }
@@ -177,7 +173,7 @@ void Lire_String(){
 }
 void Erreur(Erreurs ERR){
 	int  ind_err=ERR;
-	printf( "Erreur  numero  %d \t : %s , %s %s \n", ind_err, MES_ERR[ind_err] .mes,MES_ERR[ind_err].CODE_ERR,SYM_COUR.NOM);
+	printf( "Erreur  numero  %d \t : %s  %s \n", ind_err, MES_ERR[ind_err].mes,SYM_COUR.NOM);
 	//getch();
 	exit(1);
 }
